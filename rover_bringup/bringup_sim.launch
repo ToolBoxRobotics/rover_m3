@@ -1,0 +1,27 @@
+<launch>
+  <arg name="gui" default="true"/>
+  <arg name="verbose" default="false"/>
+  <!-- start Gazebo world -->
+  <include file="$(find rover_gazebo)/launch/empty_world.launch.xml">
+    <arg name="paused" value="false"/>
+  </include>
+
+  <!-- spawn robot -->
+  <node pkg="gazebo_ros" type="spawn_model" name="spawn_rover" args="-file $(find rover_description)/urdf/rover.urdf -urdf -model rover" />
+
+  <!-- controller manager (ros_control) -->
+  <node pkg="controller_manager" type="spawner" name="spawn_controllers" args="joint_state_controller wheel_velocity_controller steer_position_controller" />
+
+  <!-- start rosserial bridge (if connecting simulated arduino) -->
+  <!-- Teleop -->
+  <node pkg="joy" type="joy_node" name="joy_node" />
+  <node pkg="teleop_twist_joy" type="teleop_node" name="teleop_twist_joy" output="screen" >
+    <param name="axis_linear" value="1" />
+    <param name="axis_angular" value="0" />
+  </node>
+
+  <!-- start ackermann mapper -->
+  <node pkg="rover_nodes" type="ackermann_mapper.py" name="ackermann_mapper" output="screen" />
+  <!-- odom -->
+  <node pkg="rover_nodes" type="odometry_node.py" name="odometry_node" output="screen" />
+</launch>
