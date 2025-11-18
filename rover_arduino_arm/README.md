@@ -5,6 +5,7 @@
 - expose JointState and accept joint angle targets via rosserial
 - optionally perform microstepping config pins and current limiting via hardware
 
+
 Notes:
 
 The above does blocking step loops — fine for simple rigs. If you want non-blocking multi-joint coordinated moves, implement Bresenham / motion planner or use stepper libraries with interrupts.
