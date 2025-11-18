@@ -20,6 +20,7 @@ sensor_msgs::JointState joint_state_msg;
 ros::Publisher joint_state_pub("arm/joint_states", &joint_state_msg);
 
 std_msgs::Float32MultiArray target_msg;
+
 void arm_cmd_cb(const std_msgs::Float32MultiArray& msg) {
   // msg: target angles in degrees
   for (int i=0;i<NUM_JOINTS;i++){
